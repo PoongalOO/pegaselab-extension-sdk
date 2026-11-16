@@ -91,7 +91,14 @@ export class Pegase {
      */
     declarerPolice: async (id: string, famille: string, descripteurs: FontFaceDescriptors = {}): Promise<FontFace> => {
       const contenu = await (await this.pont.appeler<Blob>('fichiers.lire', { id })).arrayBuffer();
-      const police = new FontFace(famille, contenu, descripteurs);
+      // nom tel quel (Chromium garderait des guillemets dans le nom) ; entre guillemets si le navigateur le refuse :
+      // WebKit lit le nom comme une liste CSS et refuse « Baloo 2 » sans guillemets (« 2 » n'est pas un identifiant)
+      let police: FontFace;
+      try {
+        police = new FontFace(famille, contenu, descripteurs);
+      } catch {
+        police = new FontFace(`"${famille.replace(/["\\]/g, '')}"`, contenu, descripteurs);
+      }
       await police.load();
       // FontFaceSet.add : absent des types DOM de TypeScript, présent dans tous les navigateurs
       (document.fonts as unknown as Set<FontFace>).add(police);
@@ -202,6 +209,15 @@ export class Pegase {
 
   titre(texte: string): void {
     this.pont.signal('titre', { texte });
+  }
+
+  /**
+   * Lien vers un autre site (Pégase 1.31.0) : l'iframe isolée ne peut rien ouvrir ; le Core montre l'adresse (HTTP(S),
+   * sans identifiants) et l'ouvre après confirmation de la personne, dans un nouvel onglet ou, dans PégaseLab, par le
+   * navigateur du téléphone. Sans effet avec un Core plus ancien : montrez aussi l'adresse dans la page.
+   */
+  ouvrirLien(adresse: string): void {
+    this.pont.signal('lien', { adresse });
   }
 
   /** Hauteur de l'iframe ajustée au contenu, puis suivie (ResizeObserver) */

@@ -144,7 +144,7 @@ export type Methode =
   | 'evenements.lister' | 'evenements.acquitter' | 'evenements.publier'
   | 'ressources.lire';
 
-export type NomSignal = 'pret' | 'hauteur' | 'naviguer' | 'connexion' | 'message' | 'titre';
+export type NomSignal = 'pret' | 'hauteur' | 'naviguer' | 'connexion' | 'message' | 'titre' | 'lien';
 
 export interface MessagePont {
   pont: typeof PONT;
