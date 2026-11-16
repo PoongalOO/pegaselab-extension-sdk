@@ -169,10 +169,16 @@ test('police déposée déclarée avec FontFace (en ligne comme hors ligne)', as
     assert.deepEqual([requete.methode, requete.parametres], ['fichiers.lire', { id: '01JCZZZZZZZZZZZZZZZZZZZZZZ' }]);
     c.livrer({ pont: PONT, type: 'reponse', id: requete.id, ok: true, resultat: new Blob([new Uint8Array([0x77, 0x4f, 0x46, 0x32])]) });
     const police = await promesse;
-    assert.equal(police.famille, 'Titres');
+    assert.equal(police.famille, '"Titres"', 'nom entre guillemets (WebKit)');
     assert.deepEqual(new Uint8Array(police.source), new Uint8Array([0x77, 0x4f, 0x46, 0x32]));
     assert.deepEqual([police.descripteurs, police.chargee, ajoutees.length], [{ weight: '700' }, true, 1]);
   } finally {
     Object.assign(globalThis, avant);
   }
+});
+
+test('lien vers un autre site : signal « lien »', () => {
+  const c = canal();
+  new Pegase(c).ouvrirLien('https://www.youtube.com/watch?v=abc');
+  assert.deepEqual(c.envoyes.at(-1), { pont: PONT, type: 'signal', signal: 'lien', adresse: 'https://www.youtube.com/watch?v=abc' });
 });
