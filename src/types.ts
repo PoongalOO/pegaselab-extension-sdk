@@ -45,19 +45,26 @@ export interface PageDocuments<T = unknown> {
   suivant: string | null;
 }
 
-/** Image (fichiers:deposer, réencodée en PNG ou JPEG), son ou vidéo (fichiers:medias, 15 Mo au plus) */
+/**
+ * Image (fichiers:deposer, réencodée en PNG ou JPEG), son, vidéo ou police (fichiers:medias, 15 Mo au plus ; WAV et
+ * polices depuis Pégase 1.30.0)
+ */
 export interface Fichier {
   id: string;
-  type: 'image/png' | 'image/jpeg' | 'audio/mpeg' | 'audio/mp4' | 'audio/webm' | 'video/mp4' | 'video/webm';
-  /** depuis Pégase 1.9.0 */
-  nature?: 'image' | 'audio' | 'video';
+  type:
+    | 'image/png' | 'image/jpeg'
+    | 'audio/mpeg' | 'audio/mp4' | 'audio/webm' | 'audio/wav'
+    | 'video/mp4' | 'video/webm'
+    | 'font/ttf' | 'font/otf' | 'font/woff' | 'font/woff2';
+  /** depuis Pégase 1.9.0 ; « police » depuis Pégase 1.30.0 */
+  nature?: 'image' | 'audio' | 'video' | 'police';
   taille: number;
   /** images seulement */
   largeur?: number;
   hauteur?: number;
-  /** sons et vidéos : nom du fichier déposé, nettoyé */
+  /** sons, vidéos et polices : nom du fichier déposé, nettoyé */
   nom?: string | null;
-  /** sons et vidéos : lecture possible avant la fin du téléchargement (MP4 « faststart ») */
+  /** sons et vidéos : lecture possible avant la fin du téléchargement (MP4 « faststart ») ; false pour une police */
   progressif?: boolean;
   cree?: string;
 }

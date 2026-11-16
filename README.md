@@ -18,7 +18,7 @@ Chaque version est publiée comme archive npm attachée à sa release GitHub (em
 `package-lock.json` du projet qui l'installe) :
 
 ```sh
-npm install --save-dev https://github.com/PoongalOO/pegaselab-extension-sdk/releases/download/v0.4.0/pegase-extension-sdk-0.4.0.tgz
+npm install --save-dev https://github.com/PoongalOO/pegaselab-extension-sdk/releases/download/v0.6.0/pegase-extension-sdk-0.6.0.tgz
 ```
 
 L'interface d'une extension doit être livrée en fichiers statiques sans dépendance externe : regroupez votre code et
@@ -52,7 +52,7 @@ p.ajusterHauteur();                           // hauteur de l'iframe suivie auto
 ```
 
 Autres fonctions : `permissions.possede()`, `fichiers.deposer(blob)`, `fichiers.lire(id)` et `fichiers.adresse(id)`
-(image prête à afficher), `projets.*` (dont `publier`), `parcours.lire()` et `resultats.enregistrer()` (joueur),
+(image prête à afficher), `fichiers.declarerPolice(id, famille)`, `projets.*` (dont `publier`), `parcours.lire()` et `resultats.enregistrer()` (joueur),
 `evenements.lister()` et `evenements.acquitter()`, `ressources.lire(url)`, `naviguer(page, parametre)`,
 `message(niveau, texte)`, `titre(texte)`, `surDesactivation(rappel)`. Chaque appel est vérifié par le Core : permission
 accordée par un administrateur et droits de l'utilisateur.
@@ -87,6 +87,9 @@ Pour faire installer votre extension sur PégaseLab ou un autre portail Pégase 
 
 ## Versions
 
+- **0.6.0** (Pégase 1.30.0) : sons WAV et polices (TTF, OTF, WOFF, WOFF2) déposés avec `fichiers.deposer` (nature
+  `police`) ; `fichiers.declarerPolice(id, famille)` déclare une police déposée avec l'API FontFace, en ligne comme hors
+  ligne ; `ressources.lire` relaie aussi les sons et les polices ; projets de 1 Mio par le pont.
 - **0.5.0** (Pégase 1.16.0) : `projets.depublier(id)` (parcours plus téléchargeable ni jouable en ligne) et
   `projets.desinstaller(id)` (en plus effacé des appareils qui l'ont gardé : lecteur web et PégaseLab), confirmés par le
   Core ; `Publication.retrait` et `retire` ; une nouvelle publication rétablit le parcours, même code.
