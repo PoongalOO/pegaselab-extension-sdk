@@ -89,7 +89,7 @@ Pour faire installer votre extension sur PégaseLab ou un autre portail Pégase 
 
 - **0.6.0** (Pégase 1.30.0) : sons WAV et polices (TTF, OTF, WOFF, WOFF2) déposés avec `fichiers.deposer` (nature
   `police`) ; `fichiers.declarerPolice(id, famille)` déclare une police déposée avec l'API FontFace, en ligne comme hors
-  ligne ; `ressources.lire` relaie aussi les sons et les polices ; projets de 1 Mio par le pont.
+  ligne ; `ressources.lire` relaie aussi les feuilles de style, les sons et les polices ; projets de 1 Mio par le pont.
 - **0.5.0** (Pégase 1.16.0) : `projets.depublier(id)` (parcours plus téléchargeable ni jouable en ligne) et
   `projets.desinstaller(id)` (en plus effacé des appareils qui l'ont gardé : lecteur web et PégaseLab), confirmés par le
   Core ; `Publication.retrait` et `retire` ; une nouvelle publication rétablit le parcours, même code.

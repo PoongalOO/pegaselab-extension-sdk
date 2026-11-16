@@ -177,9 +177,10 @@ export class Pegase {
 
   readonly ressources = {
     /**
-     * Ressource HTTPS d'un domaine accordé (ressources:<domaine>), relayée par le Core : image ou JSON ; son (MP3, M4A,
-     * WAV) ou police (TTF, OTF, WOFF, WOFF2) reconnus d'après leur contenu depuis Pégase 1.30.0 ; 5 Mio pour une image
-     * ou une police, 16 Mio pour un JSON ou un son (contenu décompressé)
+     * Ressource HTTPS d'un domaine accordé (ressources:<domaine>), relayée par le Core : image, JSON ou feuille de
+     * style ; son (MP3, M4A, WAV) ou police (TTF, OTF, WOFF, WOFF2) reconnus d'après leur contenu. Feuilles de style,
+     * sons et polices depuis Pégase 1.30.0 ; 5 Mio pour une image, une feuille de style ou une police, 16 Mio pour un
+     * JSON ou un son (contenu décompressé)
      */
     lire: (url: string): Promise<Blob> => this.pont.appeler('ressources.lire', { url }),
   };
