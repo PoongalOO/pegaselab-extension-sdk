@@ -91,8 +91,14 @@ export class Pegase {
      */
     declarerPolice: async (id: string, famille: string, descripteurs: FontFaceDescriptors = {}): Promise<FontFace> => {
       const contenu = await (await this.pont.appeler<Blob>('fichiers.lire', { id })).arrayBuffer();
-      // nom entre guillemets : WebKit lit le nom comme une liste CSS et refuse « Baloo 2 » sans guillemets
-      const police = new FontFace(`"${famille.replace(/["\\]/g, '')}"`, contenu, descripteurs);
+      // nom tel quel (Chromium garderait des guillemets dans le nom) ; entre guillemets si le navigateur le refuse :
+      // WebKit lit le nom comme une liste CSS et refuse « Baloo 2 » sans guillemets (« 2 » n'est pas un identifiant)
+      let police: FontFace;
+      try {
+        police = new FontFace(famille, contenu, descripteurs);
+      } catch {
+        police = new FontFace(`"${famille.replace(/["\\]/g, '')}"`, contenu, descripteurs);
+      }
       await police.load();
       // FontFaceSet.add : absent des types DOM de TypeScript, présent dans tous les navigateurs
       (document.fonts as unknown as Set<FontFace>).add(police);

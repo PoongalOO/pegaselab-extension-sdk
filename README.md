@@ -88,7 +88,7 @@ Pour faire installer votre extension sur PégaseLab ou un autre portail Pégase 
 ## Versions
 
 - **0.7.0** (Pégase 1.31.0) : `ouvrirLien(adresse)` (signal `lien` : autre site ouvert après confirmation de la
-  personne) ; `fichiers.declarerPolice` met le nom entre guillemets (WebKit refusait « Baloo 2 »).
+  personne) ; `fichiers.declarerPolice` reprend le nom entre guillemets quand le navigateur le refuse (WebKit refusait « Baloo 2 »).
 - **0.6.0** (Pégase 1.30.0) : sons WAV et polices (TTF, OTF, WOFF, WOFF2) déposés avec `fichiers.deposer` (nature
   `police`) ; `fichiers.declarerPolice(id, famille)` déclare une police déposée avec l'API FontFace, en ligne comme hors
   ligne ; `ressources.lire` relaie aussi les feuilles de style, les sons et les polices ; projets de 1 Mio par le pont.
