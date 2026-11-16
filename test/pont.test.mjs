@@ -153,3 +153,26 @@ test('0.4.0 : point d\'entrée scanné pendant la partie', () => {
   c.livrer({ pont: PONT, type: 'notification', nom: 'parametre', donnees: { parametre: null } });
   assert.deepEqual(recus, ['5', null]);
 });
+
+test('police déposée déclarée avec FontFace (en ligne comme hors ligne)', async () => {
+  const ajoutees = [];
+  const avant = { FontFace: globalThis.FontFace, document: globalThis.document };
+  globalThis.FontFace = class {
+    constructor(famille, source, descripteurs) { Object.assign(this, { famille, source, descripteurs, chargee: false }); }
+    async load() { this.chargee = true; return this; }
+  };
+  globalThis.document = { fonts: { add: (police) => ajoutees.push(police) } };
+  try {
+    const c = canal();
+    const promesse = new Pegase(c).fichiers.declarerPolice('01JCZZZZZZZZZZZZZZZZZZZZZZ', 'Titres', { weight: '700' });
+    const requete = c.envoyes.at(-1);
+    assert.deepEqual([requete.methode, requete.parametres], ['fichiers.lire', { id: '01JCZZZZZZZZZZZZZZZZZZZZZZ' }]);
+    c.livrer({ pont: PONT, type: 'reponse', id: requete.id, ok: true, resultat: new Blob([new Uint8Array([0x77, 0x4f, 0x46, 0x32])]) });
+    const police = await promesse;
+    assert.equal(police.famille, 'Titres');
+    assert.deepEqual(new Uint8Array(police.source), new Uint8Array([0x77, 0x4f, 0x46, 0x32]));
+    assert.deepEqual([police.descripteurs, police.chargee, ajoutees.length], [{ weight: '700' }, true, 1]);
+  } finally {
+    Object.assign(globalThis, avant);
+  }
+});

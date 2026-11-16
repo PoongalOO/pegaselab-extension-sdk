@@ -78,12 +78,25 @@ export class Pegase {
 
   readonly fichiers = {
     /**
-     * Image (fichiers:deposer) ou son ou vidéo (fichiers:medias, 15 Mo au plus), reconnus d'après leur contenu ;
-     * progression : suivi de l'envoi (Pégase 1.9.0 et suivants)
+     * Image (fichiers:deposer) ou son, vidéo ou police (fichiers:medias, 15 Mo au plus ; WAV et polices : Pégase
+     * 1.30.0), reconnus d'après leur contenu ; progression : suivi de l'envoi (Pégase 1.9.0 et suivants)
      */
     deposer: (fichier: Blob, options: { progression?: (envoye: number, total: number) => void } = {}): Promise<Fichier> =>
       this.pont.appeler('fichiers.deposer', {}, fichier, { delai: 120_000, progression: options.progression }),
     lire: (id: string): Promise<Blob> => this.pont.appeler('fichiers.lire', { id }),
+    /**
+     * Police déposée (Pégase 1.30.0) déclarée dans la page sous le nom de famille donné, en ligne comme hors ligne :
+     * contenu lu par le pont puis donné à l'API FontFace (une police ne se charge jamais par une adresse dans l'iframe
+     * d'origine opaque) ; rend la police chargée et ajoutée à document.fonts
+     */
+    declarerPolice: async (id: string, famille: string, descripteurs: FontFaceDescriptors = {}): Promise<FontFace> => {
+      const contenu = await (await this.pont.appeler<Blob>('fichiers.lire', { id })).arrayBuffer();
+      const police = new FontFace(famille, contenu, descripteurs);
+      await police.load();
+      // FontFaceSet.add : absent des types DOM de TypeScript, présent dans tous les navigateurs
+      (document.fonts as unknown as Set<FontFace>).add(police);
+      return police;
+    },
     /**
      * Adresse à charger dans <img>, <audio> ou <video> : adresse signée et temporaire servie par le Core (lecture par
      * plages) ; avec un Core antérieur à 1.9.0, image en adresse data: (une adresse blob: créée dans l'iframe, d'origine
@@ -163,6 +176,12 @@ export class Pegase {
   };
 
   readonly ressources = {
+    /**
+     * Ressource HTTPS d'un domaine accordé (ressources:<domaine>), relayée par le Core : image, JSON ou feuille de
+     * style ; son (MP3, M4A, WAV) ou police (TTF, OTF, WOFF, WOFF2) reconnus d'après leur contenu. Feuilles de style,
+     * sons et polices depuis Pégase 1.30.0 ; 5 Mio pour une image, une feuille de style ou une police, 16 Mio pour un
+     * JSON ou un son (contenu décompressé)
+     */
     lire: (url: string): Promise<Blob> => this.pont.appeler('ressources.lire', { url }),
   };
 

@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:pegase:schema:pont:1",
   "title": "Messages du pont pegase-pont/1 entre une interface d'extension (iframe isolée) et le Core",
-  "description": "Voir docs/extensions/extension-api.md, section Pont. Taille maximale d'un message : 256 Kio, hors fichiers transférés (Blob).",
+  "description": "Voir docs/extensions/extension-api.md, section Pont. Taille maximale d'un message : 256 Kio, hors fichiers transférés (Blob) ; 1 Mio plus 4 Kio pour projets.creer et projets.modifier (Pégase 1.30.0).",
   "oneOf": [
     { "$ref": "#/$defs/requete" },
     { "$ref": "#/$defs/reponse" },
