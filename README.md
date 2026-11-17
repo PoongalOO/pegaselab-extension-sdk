@@ -18,7 +18,7 @@ Chaque version est publiée comme archive npm attachée à sa release GitHub (em
 `package-lock.json` du projet qui l'installe) :
 
 ```sh
-npm install --save-dev https://github.com/PoongalOO/pegaselab-extension-sdk/releases/download/v0.7.0/pegase-extension-sdk-0.7.0.tgz
+npm install --save-dev https://github.com/PoongalOO/pegaselab-extension-sdk/releases/download/v0.8.0/pegase-extension-sdk-0.8.0.tgz
 ```
 
 L'interface d'une extension doit être livrée en fichiers statiques sans dépendance externe : regroupez votre code et
@@ -87,6 +87,9 @@ Pour faire installer votre extension sur PégaseLab ou un autre portail Pégase 
 
 ## Versions
 
+- **0.8.0** (Pégase 1.33.0) : vignette du parcours publié, `projets.publier(id, { vignette })` (identifiant d'une image
+  déposée par l'extension, `null` pour la retirer), montrée sur la carte du parcours dans PégaseLab et gardée hors ligne
+  avec lui ; `Publication.vignette`. Avec un Pégase plus ancien, la vignette est ignorée.
 - **0.7.0** (Pégase 1.31.0) : `ouvrirLien(adresse)` (signal `lien` : autre site ouvert après confirmation de la
   personne) ; `fichiers.declarerPolice` reprend le nom entre guillemets quand le navigateur le refuse (WebKit refusait « Baloo 2 »).
 - **0.6.0** (Pégase 1.30.0) : sons WAV et polices (TTF, OTF, WOFF, WOFF2) déposés avec `fichiers.deposer` (nature

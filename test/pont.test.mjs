@@ -129,6 +129,11 @@ test('0.3.0 : progression de l\'envoi, adresse signée et repli data:, liste, qu
   assert.deepEqual(c.envoyes.at(-1).parametres, { id: 'P', acces: [{ parametre: '1', libelle: 'Œuvre 1' }] });
   pegase.projets.publier('P').catch(() => {});
   assert.deepEqual(c.envoyes.at(-1).parametres, { id: 'P' });
+  // 0.8.0 : vignette du parcours (image déposée), ou null pour la retirer
+  pegase.projets.publier('P', { vignette: '01JD0000000000000000000001' }).catch(() => {});
+  assert.deepEqual(c.envoyes.at(-1).parametres, { id: 'P', vignette: '01JD0000000000000000000001' });
+  pegase.projets.publier('P', { acces: [], vignette: null }).catch(() => {});
+  assert.deepEqual(c.envoyes.at(-1).parametres, { id: 'P', acces: [], vignette: null });
 });
 
 test('0.5.0 : dépublier, désinstaller des appareils', async () => {

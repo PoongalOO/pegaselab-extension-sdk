@@ -142,10 +142,16 @@ export class Pegase {
     supprimer: (id: string): Promise<null> => this.pont.appeler('projets.supprimer', { id }),
     /**
      * Le Core demande confirmation à l'utilisateur, puis affiche le lien vers la page des QR codes du parcours ;
-     * acces : points d'entrée (une œuvre…), ouverts par /extensions/joueur/{code}/{parametre}, 300 au plus
+     * acces : points d'entrée (une œuvre…), ouverts par /extensions/joueur/{code}/{parametre}, 300 au plus ;
+     * vignette (Pégase 1.33.0) : identifiant d'une image déposée par l'extension (fichiers.deposer), montrée sur la carte
+     * du parcours dans PégaseLab et gardée hors ligne avec lui ; null ou absente : vignette par défaut
      */
-    publier: (id: string, options: { acces?: Acces[] } = {}): Promise<Publication> =>
-      this.pont.appeler('projets.publier', options.acces === undefined ? { id } : { id, acces: options.acces }),
+    publier: (id: string, options: { acces?: Acces[]; vignette?: string | null } = {}): Promise<Publication> =>
+      this.pont.appeler('projets.publier', {
+        id,
+        ...(options.acces === undefined ? {} : { acces: options.acces }),
+        ...(options.vignette === undefined ? {} : { vignette: options.vignette }),
+      }),
     /**
      * Dépublier (Pégase 1.16.0) : le parcours ne peut plus être téléchargé ni joué en ligne ; les appareils qui l'ont
      * gardé le jouent encore. Le Core demande confirmation ; une nouvelle publication le rétablit, même code

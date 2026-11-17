@@ -102,6 +102,8 @@ export interface Publication {
   retrait?: Retrait;
   /** date du retrait */
   retire?: string;
+  /** vignette du parcours : image déposée par l'extension (Pégase 1.33.0), null si aucune */
+  vignette?: string | null;
 }
 
 export type Retrait = 'depublie' | 'desinstalle';
